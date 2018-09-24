@@ -149,7 +149,11 @@ bool cVAOMeshManager::m_LoadModelFromFile(sModelDrawInfo &drawInfo) {
 
 	std::cout << "Read from the file ok" << std::endl;
 
-	//****Calculating extens
+	//****Calculating extens (min/max edges)
+	//if we want to fit a model into a box 1x1x1
+	//we need to do scale = 1.0f / MaximumExtent
+	//2x2x2 --> 2.0f / MaximumExtent
+
 
 	drawInfo.minX = drawInfo.pVerticesFromFile[0].x;
 	drawInfo.minY = drawInfo.pVerticesFromFile[0].y;
@@ -186,21 +190,22 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 
 	//***Alocate another array temp for the vertex buffer
 
-	drawInfo.pVerticesToVAO = new sVert_xyz_rgb[drawInfo.numberOfVertices];
+	drawInfo.pVerticesToVBO = new sVert_xyz_rgb[drawInfo.numberOfVertices];
 
 	//***Copy everything from PLY format to the vertex buffer format
 	for (unsigned int index = 0; index != drawInfo.numberOfVertices; index++) {
 
 		//copy data to shader
-		drawInfo.pVerticesToVAO[index].x = drawInfo.pVerticesFromFile[index].x;
-		drawInfo.pVerticesToVAO[index].y = drawInfo.pVerticesFromFile[index].y;
-		drawInfo.pVerticesToVAO[index].z = drawInfo.pVerticesFromFile[index].z;
+		drawInfo.pVerticesToVBO[index].x = drawInfo.pVerticesFromFile[index].x;
+		drawInfo.pVerticesToVBO[index].y = drawInfo.pVerticesFromFile[index].y;
+		drawInfo.pVerticesToVBO[index].z = drawInfo.pVerticesFromFile[index].z;
 
-		drawInfo.pVerticesToVAO[index].r = 1.0f;
-		drawInfo.pVerticesToVAO[index].g = 1.0f;
-		drawInfo.pVerticesToVAO[index].b = 1.0f;
+		drawInfo.pVerticesToVBO[index].r = 1.0f;
+		drawInfo.pVerticesToVBO[index].g = 1.0f;
+		drawInfo.pVerticesToVBO[index].b = 1.0f;
 	}
 
+	//***Create a VAO (vertex Array object) Everything which ties to vertex array is remebered 
 	glGenVertexArrays( 1, &(drawInfo.VAO_ID) );
 	glBindVertexArray(drawInfo.VAO_ID);
 
@@ -208,6 +213,7 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 	GLuint  vpos_location, vcol_location;
 	drawInfo.vertexBufferID;
 
+	//Creates VBO = vertes buffer object
 	glGenBuffers(1, &(drawInfo.vertexBufferID) ); //1 - is how many buffers do you want & - passing by refference, gives the address
 	glBindBuffer(GL_ARRAY_BUFFER, drawInfo.vertexBufferID); //gives to a new buffer a type permanetly(never change)- "vertex buffer"
 
@@ -216,7 +222,7 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 	//It takes array of pVertices and copy it to GPU
 	glBufferData(GL_ARRAY_BUFFER, //***MAKE ME A BUFFER
 		vertexBufferSizeInBytes, //sizeof(vertices), //ALLOCATE THAT MANY BYTES
-		drawInfo.pVerticesToVAO, //vertices, //FROM COPY DATA THIS ARRAY
+		drawInfo.pVerticesToVBO, //vertices, //FROM COPY DATA THIS ARRAY
 		GL_STATIC_DRAW); //DRAW
 
 	drawInfo.numberOfIndices = drawInfo.numberOfTriangles * 3;
@@ -224,10 +230,10 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 	memset(drawInfo.pIndices, 0, sizeof(unsigned int) * drawInfo.numberOfIndices);
 
 
-	//Load Index buffer
-
+	//***Create an array for index buffer
 	unsigned int indexIndex = 0; //Index into the VERTEX array
 
+	//usigned int 32bit
 	for (unsigned int triIndex = 0;
 		triIndex != drawInfo.numberOfTriangles;
 		triIndex++, indexIndex += 3) {
@@ -238,6 +244,7 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 
 	}
 
+	//***Create a VAO (vertex Array object) Everything which ties to vertex array is remebered 
 	glGenBuffers(1, &(drawInfo.indexBufferID)); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawInfo.indexBufferID); 
 
@@ -274,7 +281,8 @@ bool cVAOMeshManager::m_LoadDrawInfo_Into_VAO(sModelDrawInfo &drawInfo,
 
 	//Get rif of everything
 
-	glBindVertexArray(0);
+	//***Sets current VAO to nothing
+	glBindVertexArray(0); //stop remembering. Changing it's attentions to smw else
 
 	return true;
 }

@@ -15,7 +15,7 @@ sModelDrawInfo::sModelDrawInfo() {
 	this-> numberOfTriangles = 0;
 
 	this->pVerticesFromFile = NULL;
-	this->pVerticesToVAO = NULL;
+	this->pVerticesToVBO = NULL;
 	this-> pIndices = NULL;
 	this-> pTriangles = NULL; 
 

@@ -4,9 +4,27 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 #include <string>
 #include "sPlyVertex.h"
 #include "sPlyTriangle.h"
+#include "cMeshObject.h"
+
+extern cMeshObject* pRogerRabbit;
+
+extern glm::vec3 g_CameraEye;
+extern glm::vec3 g_CameraAt;
+
+extern glm::vec3 g_lightPos;
+extern float g_lightBrightness;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void processKeys(GLFWwindow* window);
+
+cMeshObject* findObjectByFriendlyName(std::string theName);
+cMeshObject* findObjectByUniqueID(int ID);
+
 
 //extern key means "Don't allocate it here, bc it is(will be) allocated somewhere else,
 //It helps to avoid Linker error. "extern" doesn't work if assign to 0

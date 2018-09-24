@@ -45,6 +45,12 @@
     <ClCompile Include="theMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMeshObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linmath.h">
@@ -62,14 +68,14 @@
     <ClInclude Include="sPlyTriangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cMeshObject.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="cVAOMeshManager.h">
       <Filter>Mesh Manager</Filter>
     </ClInclude>
     <ClInclude Include="sModelDrawInfo.h">
       <Filter>Mesh Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cMeshObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +84,6 @@
     </None>
     <None Include="vertex01.glsl">
       <Filter>ShaderStuff</Filter>
-    </None>
-    <None Include="bun_res3_xyz.ply">
-      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>

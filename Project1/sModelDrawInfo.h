@@ -31,7 +31,7 @@ struct sModelDrawInfo
 
 	//This is vertex informationas being passed to the GPU
 	// (it is in format that shader needs)
-	sVert_xyz_rgb* pVerticesToVAO;
+	sVert_xyz_rgb* pVerticesToVBO;
 
 	//This buffer is indices as a 1D array (that the GPU needs)
 	unsigned int* pIndices;
@@ -39,8 +39,6 @@ struct sModelDrawInfo
 	// These are the original triangles values from file,
 	//but in the triangles or "face" format
 	sPlyTriangle* pTriangles;  //=0
-
-
 
 	float maxX, maxY, maxZ;
 	float minX, minY, minZ;
